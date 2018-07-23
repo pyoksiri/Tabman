@@ -83,7 +83,7 @@ class TabViewController: TabmanViewController, PageboyViewControllerDataSource {
         case .blockTabBar, .buttonBar:
             count = 3
         default:
-            count = 5
+            count = 4
         }
         
         initializeViewControllers(count: count)
@@ -98,9 +98,12 @@ class TabViewController: TabmanViewController, PageboyViewControllerDataSource {
         for index in 0 ..< count {
             let viewController = storyboard.instantiateViewController(withIdentifier: "ChildViewController") as! ChildViewController
             viewController.index = index + 1
-            let label = UILabel.init(frame: CGRect(x: -8.0, y: 8.0, width: 16.0, height: 16.0))
-            label.backgroundColor = UIColor.black
-            barItems.append(Item(title: "Page No. \(index + 1)", context: label))
+            let customView = UIView(frame: CGRect(x: -8.0, y: 8, width: 16.0, height: 16.0))
+            customView.backgroundColor = .clear
+            let badge = UILabel(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 16.0))
+            badge.backgroundColor = UIColor.black
+            customView.addSubview(badge)
+            barItems.append(Item(title: "Page No. \(index + 1)", context: customView))
             
             viewControllers.append(viewController)
         }
