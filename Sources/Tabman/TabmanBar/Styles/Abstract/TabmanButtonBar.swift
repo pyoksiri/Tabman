@@ -213,6 +213,7 @@ internal class TabmanButtonBar: TabmanBar {
         for (index, item) in items.enumerated() {
             
             let button = UIButton()
+            var badgeLabel = UILabel()
             view.addSubview(button)
             
             if let image = item.image, let title = item.title {
@@ -224,6 +225,10 @@ internal class TabmanButtonBar: TabmanBar {
                 button.setTitle(title, for: .normal)
                 // Nudge it over a little bit
                 button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 0.0)
+            } else if let title = item.title, let badge = item.context as? UILabel {
+                button.setTitle(title, for: .normal)
+                badgeLabel = badge
+                view.addSubview(badge)
             } else if let title = item.title {
                 button.setTitle(title, for: .normal)
             } else if let image = item.image {
@@ -239,6 +244,12 @@ internal class TabmanButtonBar: TabmanBar {
             button.titleLabel?.font = self.textFont
             
             // layout
+            if badgeLabel.superview != nil {
+                badgeLabel.set(.height, to: badgeLabel.bounds.height)
+                badgeLabel.set(.width, to: badgeLabel.bounds.width)
+                badgeLabel.pinToSuperviewEdge(.top, inset: badgeLabel.frame.origin.y, priority: UILayoutPriority(500))
+                badgeLabel.pinEdge(.trailing, to: .trailing, of: button, inset: badgeLabel.frame.origin.x, priority: UILayoutPriority(500))
+            }
             button.set(.height, to: Defaults.minimumItemHeight, priority: UILayoutPriority(500))
             button.pinToSuperviewEdge(.top)
             button.pinToSuperviewEdge(.bottom)
